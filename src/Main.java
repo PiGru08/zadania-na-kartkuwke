@@ -7,35 +7,29 @@ public class Main {
         System.out.print("Podaj liczbę: ");
         int liczba = scanner.nextInt();
 
-        // Obliczenie sumy silni cyfr
-        int sumaSilni = sumaSilniCyfr(liczba);
-        System.out.println("Suma silni cyfr liczby " + liczba + " to: " + sumaSilni);
+        // Sprawdzenie, czy liczba jest liczbą pierwszą
+        if (czyLiczbaPierwsza(liczba)) {
+            System.out.println("Liczba " + liczba + " jest liczbą pierwszą.");
+        } else {
+            System.out.println("Liczba " + liczba + " nie jest liczbą pierwszą.");
+        }
     }
 
-    // Funkcja obliczająca sumę silni cyfr liczby
-    private static int sumaSilniCyfr(int liczba) {
-        int suma = 0;
-
-        // Dla każdej cyfry liczby obliczamy jej silnię
-        while (liczba > 0) {
-            int cyfra = liczba % 10;  // Pobranie ostatniej cyfry
-            suma += silnia(cyfra);    // Dodanie silni cyfry do sumy
-            liczba /= 10;             // Usunięcie ostatniej cyfry
+    // Funkcja sprawdzająca, czy liczba jest liczbą pierwszą
+    private static boolean czyLiczbaPierwsza(int liczba) {
+        // Liczby mniejsze niż 2 nie są pierwsze
+        if (liczba < 2) {
+            return false;
         }
 
-        return suma;
-    }
-
-    // Funkcja obliczająca silnię danej liczby
-    private static int silnia(int n) {
-        if (n == 0 || n == 1) {
-            return 1; // Silnia 0! i 1! to 1
+        // Sprawdzanie dzielników od 2 do pierwiastka z liczby
+        for (int i = 2; i <= Math.sqrt(liczba); i++) {
+            if (liczba % i == 0) {
+                return false; // Znaleziono dzielnik, więc liczba nie jest pierwsza
+            }
         }
 
-        int wynik = 1;
-        for (int i = 2; i <= n; i++) {
-            wynik *= i;
-        }
-        return wynik;
+        // Jeśli nie znaleziono żadnego dzielnika, liczba jest pierwsza
+        return true;
     }
 }
