@@ -1,35 +1,34 @@
-import java.util.Scanner;
+import java.security.SecureRandom;
 
 public class Main {
     public static void main(String[] args) {
-        // Wczytanie liczby od użytkownika
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Podaj liczbę: ");
-        int liczba = scanner.nextInt();
+        // Długość hasła
+        int dlugoscHasla = 20;
 
-        // Sprawdzenie, czy liczba jest liczbą pierwszą
-        if (czyLiczbaPierwsza(liczba)) {
-            System.out.println("Liczba " + liczba + " jest liczbą pierwszą.");
-        } else {
-            System.out.println("Liczba " + liczba + " nie jest liczbą pierwszą.");
-        }
+        // Znaki, które mogą wystąpić w haśle
+        String wielkieLitery = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String maleLitery = "abcdefghijklmnopqrstuvwxyz";
+        String cyfry = "0123456789";
+        String znakiSpecjalne = "!@#$%^&*()-_=+<>?";
+
+        // Wszystkie możliwe znaki
+        String wszystkieZnaki = wielkieLitery + maleLitery + cyfry + znakiSpecjalne;
+
+        // Generowanie losowego hasła
+        String haslo = generujHaslo(wszystkieZnaki, dlugoscHasla);
+        System.out.println("Wygenerowane hasło: " + haslo);
     }
 
-    // Funkcja sprawdzająca, czy liczba jest liczbą pierwszą
-    private static boolean czyLiczbaPierwsza(int liczba) {
-        // Liczby mniejsze niż 2 nie są pierwsze
-        if (liczba < 2) {
-            return false;
+    private static String generujHaslo(String znaki, int dlugosc) {
+        SecureRandom random = new SecureRandom();
+        StringBuilder haslo = new StringBuilder(dlugosc);
+
+        // Dodawanie losowych znaków do hasła
+        for (int i = 0; i < dlugosc; i++) {
+            int index = random.nextInt(znaki.length());
+            haslo.append(znaki.charAt(index));
         }
 
-        // Sprawdzanie dzielników od 2 do pierwiastka z liczby
-        for (int i = 2; i <= Math.sqrt(liczba); i++) {
-            if (liczba % i == 0) {
-                return false; // Znaleziono dzielnik, więc liczba nie jest pierwsza
-            }
-        }
-
-        // Jeśli nie znaleziono żadnego dzielnika, liczba jest pierwsza
-        return true;
+        return haslo.toString();
     }
 }
