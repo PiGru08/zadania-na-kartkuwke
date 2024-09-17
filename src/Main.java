@@ -1,42 +1,41 @@
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Wpisz pierwsze słowo: ");
-        ArrayList<Character> listaSlowo1 = wpiszDoTablicy();
+        // Wczytanie liczby od użytkownika
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Podaj liczbę: ");
+        int liczba = scanner.nextInt();
 
-        System.out.println("Wpisz drugie słowo: ");
-        ArrayList<Character> listaSlowo2 = wpiszDoTablicy();
-
-        System.out.println(czyAnagram(listaSlowo1, listaSlowo2));
+        // Obliczenie sumy silni cyfr
+        int sumaSilni = sumaSilniCyfr(liczba);
+        System.out.println("Suma silni cyfr liczby " + liczba + " to: " + sumaSilni);
     }
 
-    private static ArrayList<Character> wpiszDoTablicy() {
-        System.out.println("Podaj słowo: ");
-        Scanner klawiatura = new Scanner(System.in);
-        String slowo = klawiatura.nextLine();
-        ArrayList<Character> slowoLista = new ArrayList<>();
-        for (int i = 0; i < slowo.length(); i++) {
-            slowoLista.add(slowo.charAt(i));
+    // Funkcja obliczająca sumę silni cyfr liczby
+    private static int sumaSilniCyfr(int liczba) {
+        int suma = 0;
+
+        // Dla każdej cyfry liczby obliczamy jej silnię
+        while (liczba > 0) {
+            int cyfra = liczba % 10;  // Pobranie ostatniej cyfry
+            suma += silnia(cyfra);    // Dodanie silni cyfry do sumy
+            liczba /= 10;             // Usunięcie ostatniej cyfry
         }
-        return slowoLista;
+
+        return suma;
     }
 
-    private static String czyAnagram(ArrayList<Character> listaSlowo1, ArrayList<Character> listaSlowo2) {
-        Collections.sort(listaSlowo1);
-        Collections.sort(listaSlowo2);
-
-        if (listaSlowo1.size() != listaSlowo2.size()) {
-            return "Słowa nie są tej samej długości, więc nie są anagramami.";
-        } else {
-            for (int i = 0; i < listaSlowo1.size(); i++) {
-                if (!listaSlowo1.get(i).equals(listaSlowo2.get(i))) {
-                    return "Słowa nie są anagramami.";
-                }
-            }
-            return "Podane słowa są anagramami.";
+    // Funkcja obliczająca silnię danej liczby
+    private static int silnia(int n) {
+        if (n == 0 || n == 1) {
+            return 1; // Silnia 0! i 1! to 1
         }
+
+        int wynik = 1;
+        for (int i = 2; i <= n; i++) {
+            wynik *= i;
+        }
+        return wynik;
     }
 }
