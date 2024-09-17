@@ -2,41 +2,25 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        // The variable i was not declared, removed it as it serves no purpose here.
-
-        String slowo = wpiszStringZKlawiatury();
-        boolean palindrom = palindrom(slowo);
-
-        if (palindrom) {
-            System.out.println("Tak, jest palindromem.");
-        } else {
-            System.out.println("Nie jest palindromem.");
-        }
-
         Integer liczba = wpiszLiczbeZKlawiatury();
         Integer liczbaNajblizszaPalindroma = najblizszaDoPalindroma(liczba);
         System.out.println("Najbliższa liczba palindromowa to: " + liczbaNajblizszaPalindroma);
+
+        String slowo = wpiszStringZKlawiatury(); // Declare 'slowo' with correct type
+        String cezar = Cezar(slowo, 3);
+        System.out.println("Szyfr Cezara: " + cezar);
     }
 
     private static String wpiszStringZKlawiatury() {
         System.out.println("Podaj słowo: ");
-        Scanner Klawiatura = new Scanner(System.in);
-        return Klawiatura.nextLine();
+        Scanner klawiatura = new Scanner(System.in);
+        return klawiatura.nextLine();
     }
 
     private static Integer wpiszLiczbeZKlawiatury() {
         System.out.println("Podaj liczbę: ");
-        Scanner Klawiatura = new Scanner(System.in);
-        return Klawiatura.nextInt();
-    }
-
-    private static boolean palindrom(String slowo) {
-        for (int i = 0, j = slowo.length() - 1; i < j; i++, j--) {
-            if (slowo.charAt(i) != slowo.charAt(j)) {
-                return false;
-            }
-        }
-        return true;
+        Scanner klawiatura = new Scanner(System.in);
+        return klawiatura.nextInt();
     }
 
     private static Integer najblizszaDoPalindroma(Integer liczba) {
@@ -58,4 +42,31 @@ public class Main {
             wieksza++;
         }
     }
+
+    private static boolean palindrom(String slowo) {
+        for (int i = 0, j = slowo.length() - 1; i < j; i++, j--) {
+            if (slowo.charAt(i) != slowo.charAt(j)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static String Cezar(String slowo, int klucz) {
+        StringBuilder zaszyfrowane = new StringBuilder();
+        for (int i = 0; i < slowo.length(); i++) {
+            char znak = slowo.charAt(i);
+
+            if (Character.isLetter(znak)) { // Check if it's a letter
+                char base = Character.isUpperCase(znak) ? 'A' : 'a';
+                char znakPrzesuniety = (char) ((znak - base + klucz) % 26 + base);
+                zaszyfrowane.append(znakPrzesuniety);
+            } else {
+                zaszyfrowane.append(znak); // Keep non-letter characters as they are
+            }
+        }
+
+        return zaszyfrowane.toString();
+    }
 }
+
