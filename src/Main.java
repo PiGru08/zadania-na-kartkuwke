@@ -1,72 +1,42 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Integer liczba = wpiszLiczbeZKlawiatury();
-        Integer liczbaNajblizszaPalindroma = najblizszaDoPalindroma(liczba);
-        System.out.println("Najbliższa liczba palindromowa to: " + liczbaNajblizszaPalindroma);
+        System.out.println("Wpisz pierwsze słowo: ");
+        ArrayList<Character> listaSlowo1 = wpiszDoTablicy();
 
-        String slowo = wpiszStringZKlawiatury(); // Declare 'slowo' with correct type
-        String cezar = Cezar(slowo, 3);
-        System.out.println("Szyfr Cezara: " + cezar);
+        System.out.println("Wpisz drugie słowo: ");
+        ArrayList<Character> listaSlowo2 = wpiszDoTablicy();
+
+        System.out.println(czyAnagram(listaSlowo1, listaSlowo2));
     }
 
-    private static String wpiszStringZKlawiatury() {
+    private static ArrayList<Character> wpiszDoTablicy() {
         System.out.println("Podaj słowo: ");
         Scanner klawiatura = new Scanner(System.in);
-        return klawiatura.nextLine();
-    }
-
-    private static Integer wpiszLiczbeZKlawiatury() {
-        System.out.println("Podaj liczbę: ");
-        Scanner klawiatura = new Scanner(System.in);
-        return klawiatura.nextInt();
-    }
-
-    private static Integer najblizszaDoPalindroma(Integer liczba) {
-        int mniejsza = liczba - 1;
-        int wieksza = liczba + 1;
-
-        if (palindrom(Integer.toString(liczba))) {
-            return liczba;
-        }
-
-        while (true) {
-            if (palindrom(Integer.toString(mniejsza))) {
-                return mniejsza;
-            }
-            if (palindrom(Integer.toString(wieksza))) {
-                return wieksza;
-            }
-            mniejsza--;
-            wieksza++;
-        }
-    }
-
-    private static boolean palindrom(String slowo) {
-        for (int i = 0, j = slowo.length() - 1; i < j; i++, j--) {
-            if (slowo.charAt(i) != slowo.charAt(j)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static String Cezar(String slowo, int klucz) {
-        StringBuilder zaszyfrowane = new StringBuilder();
+        String slowo = klawiatura.nextLine();
+        ArrayList<Character> slowoLista = new ArrayList<>();
         for (int i = 0; i < slowo.length(); i++) {
-            char znak = slowo.charAt(i);
-
-            if (Character.isLetter(znak)) { // Check if it's a letter
-                char base = Character.isUpperCase(znak) ? 'A' : 'a';
-                char znakPrzesuniety = (char) ((znak - base + klucz) % 26 + base);
-                zaszyfrowane.append(znakPrzesuniety);
-            } else {
-                zaszyfrowane.append(znak); // Keep non-letter characters as they are
-            }
+            slowoLista.add(slowo.charAt(i));
         }
+        return slowoLista;
+    }
 
-        return zaszyfrowane.toString();
+    private static String czyAnagram(ArrayList<Character> listaSlowo1, ArrayList<Character> listaSlowo2) {
+        Collections.sort(listaSlowo1);
+        Collections.sort(listaSlowo2);
+
+        if (listaSlowo1.size() != listaSlowo2.size()) {
+            return "Słowa nie są tej samej długości, więc nie są anagramami.";
+        } else {
+            for (int i = 0; i < listaSlowo1.size(); i++) {
+                if (!listaSlowo1.get(i).equals(listaSlowo2.get(i))) {
+                    return "Słowa nie są anagramami.";
+                }
+            }
+            return "Podane słowa są anagramami.";
+        }
     }
 }
-
